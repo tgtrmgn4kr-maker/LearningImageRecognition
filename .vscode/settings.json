@@ -1,10 +1,12 @@
 {
     "cSpell.words": [
         "adaboost",
+        "fromarray",
         "grayscale",
         "imread",
         "imshow",
         "numpy",
-        "Rainer"
+        "Rainer",
+        "yunet"
     ]
 }
