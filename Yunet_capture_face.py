@@ -3,7 +3,7 @@ import sys
 from os import path
 from pathlib import Path
 
-detector_model = path.join(Path(__file__).resolve().parent, "models/face_detection.onnx")
+detector_model = path.join(Path(__file__).resolve().parent, "models/face_detection.onnx") # model path
 
 if not path.exists(detector_model):
     print(f"找不到模型檔案：{detector_model}")
@@ -34,7 +34,21 @@ if not cap.isOpened():
 # 取得攝影機畫面的寬高，避免在迴圈中反覆呼叫 shape，提升效能(同 input_size)
 frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-face_detector.setInputSize((frame_width, frame_height))
+face_detector.setInputSize((frame_width, frame_height)) # 將face_detector的input_size更新為攝影機的解析度
+
+''' 這樣也行
+
+# 強制設定攝影機硬體輸出為 640x480
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+# 再次確認實際取得的尺寸
+actual_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+actual_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+# 同步給模型
+face_detector.setInputSize((actual_w, actual_h))
+'''
 
 while True:
     ret, frame = cap.read()
@@ -51,7 +65,7 @@ while True:
         for face in faces:
             # 臉部外框
             box = face[0:4].astype(int)
-            cv2.rectangle(frame, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (255, 0, 0), 2)
+            cv2.rectangle(frame, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (255, 0, 0), 2) # frame, (x, y), (w, h), color, thickness
 
             # 五官特徵點 (Landmarks)
             landmarks = face[4:14].reshape(5, 2).astype(int)
