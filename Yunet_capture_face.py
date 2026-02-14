@@ -43,7 +43,7 @@ while True:
         break
 
     # 偵測臉部
-    # 注意：FaceDetectorYN.detect 會回傳 (retval, faces)
+    # FaceDetectorYN.detect 會回傳 (retval, faces)
     _, faces = face_detector.detect(frame) # faces 的格式為 (num_faces, 15)，每一行包含 [x, y, w, h, landmark1_x, landmark1_y, ..., landmark5_x, landmark5_y, confidence]
 
     # 確保 faces 有內容
